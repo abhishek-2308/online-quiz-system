@@ -10,9 +10,7 @@ $answers = $_POST;
 $feedback = [];
 
 foreach ($answers as $qid => $userAnswer) {
-
     $qid = intval(str_replace("q", "", $qid));
-
     $qData = $conn->query("SELECT * FROM questions WHERE id = $qid")->fetch_assoc();
     $correctAnswer = $qData['answer'];
 
@@ -28,7 +26,7 @@ foreach ($answers as $qid => $userAnswer) {
     ];
 }
 
-
+// Save result
 $conn->query("INSERT INTO results (user_id, score) VALUES ($uid, $score)");
 ?>
 
@@ -51,6 +49,21 @@ $conn->query("INSERT INTO results (user_id, score) VALUES ($uid, $score)");
         .question-feedback {
             margin-bottom: 20px;
         }
+        .history-btn {
+            display: block;
+            width: 200px;
+            margin: 30px auto 0;
+            padding: 10px;
+            text-align: center;
+            background-color: #28a745;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+        .history-btn:hover {
+            background-color: #218838;
+        }
     </style>
 </head>
 <body>
@@ -70,11 +83,13 @@ $conn->query("INSERT INTO results (user_id, score) VALUES ($uid, $score)");
                 <p class="correct"> Correct! Your answer: <?= $f['user_answer'] ?></p>
             <?php else: ?>
                 <p class="wrong"> Wrong. Your answer: <?= $f['user_answer'] ?></p>
-                <p class="correct">✔ Correct answer: <?= $f['correct_answer'] ?></p>
+                <p class="correct"> Correct answer: <?= $f['correct_answer'] ?></p>
             <?php endif; ?>
         </div>
         <hr>
     <?php endforeach; ?>
+
+    <a href="history.php" class="history-btn">📊 View My History</a>
 </div>
 
 </body>
